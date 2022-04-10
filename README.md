@@ -1,5 +1,5 @@
 # finger-counter
-Projekt na przedmiot "Przetwarzanie obrazu w Pythonie", Wydział Mechatroniki, 2021/22. Członkowie zespołu: [Mateusz Stryjek](https://github.com/mstryjek), [Maciej Klimek](https://github.com/MKlimek00), Kamil Florek.
+Projekt na przedmiot "Przetwarzanie obrazu w Pythonie", Wydział Mechatroniki, 2021/22. Członkowie zespołu: [Mateusz Stryjek](https://github.com/mstryjek), [Maciej Klimek](https://github.com/MKlimek00), [Kamil Florek](https://github.com/phlorek).
 
 ## Założenia projektowe
 Celem projektu jest utworzenie programu wyświetlającego na ekranie liczby palców u dłoni pokazywanych przez użytkownika. 
