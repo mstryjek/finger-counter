@@ -1,1 +1,19 @@
-## TODO
+COMMON:               ## Common values that apply to all modules
+  SHAPE: [720, 1080] ## Image shape (h, w) [int, int]
+
+IO:                   ## Config for image input/output
+  CAPTURE: 0          ## Camera index or video path [int | str]
+  SAVE: False         ## Whether to save images/videos [bool]
+  SAVE_PATH: 'output' ## Path to save directory [str]
+  SAVE_FORMAT: 'mp4'  ## Save format, either one of video formats or one of image formats [str]
+  FPS: 30             ## Frames per second [int]
+
+VIS:                  ## Config for image visualizer
+  WINNAME: 'Fingers'  ## OpenCV window name
+  INSPECT_KEY: 'c'    ## Key to press to inspect intermediate image
+  BREAK_KEY: 'q'      ## Key to press to quit out of program
+  CONTINUE_KEY: 'd'   ## Key to press to go to next processing step
+  BACK_KEY: 'a'       ## Key to press to go to previous processing step
+
+PROCESSING:           ## TODO Create config for the processing class
+  PLACEHOLDER: 5      ## Remove, placeholder

@@ -1,6 +1,7 @@
 """
 Config parser module. Contains config parser class as well as utility functions
 and helpful type aliases. Meant to read in config from a `.yml` file.
+
 MS
 """
 from __future__ import annotations ## DO NOT REMOVE
@@ -86,7 +87,6 @@ class Config(dict):
             if ok:
                 return retval, True
 
-
         return None, False
 
 
@@ -105,7 +105,6 @@ class Config(dict):
         return retdict
 
 
-
     @classmethod
     def from_file(cls, path: str = None) -> Config:
         """
@@ -118,6 +117,7 @@ class Config(dict):
             cfg_dict = yaml.safe_load(cf)
 
         return cls(cfg_path=path, **cfg_dict)
+
 
     @classmethod
     def auto(cls) -> Config:
