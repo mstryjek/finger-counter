@@ -26,8 +26,8 @@ Ponadto projekt zakłada:
 
 ## 2. TODO
 - [ ] Nagrania testowe, min. 3x30s, najlepiej w różnych oświetleniach (MK)
-- [ ] Separacja obszarów odpowiadających skórze ludzkiej (MK/KF)
-- [ ] Separacja dłoni z palcami od innych obszarów (np. twarzy) (MK/KF)
+- [X] Separacja obszarów odpowiadających skórze ludzkiej (MK/KF)
+- [X] Separacja dłoni z palcami od innych obszarów (np. twarzy) (MK/KF)
 - [ ] Separacja palców od dłoni (KF/MK)
 - [ ] Zliczanie palców (KF/MK)
 - [ ] Wyznaczenie pozycji palców (KF/MK)
