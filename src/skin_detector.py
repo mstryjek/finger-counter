@@ -1,4 +1,3 @@
-from turtle import width
 import cv2
 from cv2 import sqrt
 from cv2 import threshold
