@@ -79,7 +79,7 @@ class Skin_Detector():
             #cv2.imshow('Framed', copied_frame)
             return
     
-    def clear_boundaries(self):
+    def clear_boundaries(self) -> None:
         '''
         Setting limits for boundaries established in differentiate_objects method
         '''
@@ -108,7 +108,7 @@ class Skin_Detector():
             copied_frame = cv2.transpose(copied_frame)
             cv2.imshow('Cleared boundaries',copied_frame)
     
-    def create_object_frames(self):
+    def create_object_frames(self) -> None:
         '''
         Creation of separate ndarrays of objects after the first thresholding.
 
@@ -124,7 +124,7 @@ class Skin_Detector():
             self.valid_object_frames.append(temp)
             #cv2.imshow(str(i), temp) #DO NOT use in continuous frame capture
 
-    def valid_object_detection(self):
+    def valid_object_detection(self) -> None:
         '''
         The second thresholding of objects. If minimal object width and pixels mean requirements are met
         then objects are further analysed.
@@ -139,7 +139,7 @@ class Skin_Detector():
         '''else:
             [cv2.imshow(str(fr[0]),fr[1]) for fr in enumerate(self.valid_object_frames)]'''
     
-    def hand_detection(self):
+    def hand_detection(self) -> None:
         for frame in self.valid_object_frames:
             frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
