@@ -2,22 +2,34 @@ from config import Config
 from imio import ImageIO
 from visualizer import ProcessingVisualizer
 
+from improc import ImageProcessor
 
-def test() -> None:
+def main() -> None:
     """
     Test function for intermediate visualizations
     """
     cfg = Config.auto()
-    ## Add logic class creation here
     done = False
 
-    with ProcessingVisualizer(cfg) as vis, ImageIO(cfg) as io:
+    with ProcessingVisualizer(cfg) as vis, ImageIO(cfg) as io, ImageProcessor(cfg) as proc:
         for img in io.read_images():
             ## Do not remove these two lines!!
             vis.reset()
             vis.store(img)
 
-            ## Add image processing steps here
+            smoothed = proc.smooth(img)
+            vis.store(smoothed)
+
+            eq = proc.equalize(smoothed)
+            vis.store(eq)
+
+            mask = proc.extract_color_mask(eq)
+            vis.store(mask)
+
+            cnt = proc.extract_largest_contour(mask)
+            vis.store(cnt)
+
+            ## Add finger extraction here
 
             done = vis.show()
             if done: break
@@ -26,4 +38,4 @@ def test() -> None:
 
 
 if __name__ == '__main__':
-    test()
+    main()

@@ -68,7 +68,7 @@ class ProcessingVisualizer():
                     break
         ## Show raw stream
         else:
-            cv2.imshow(self.CFG.VIS.WINNAME, self.images[0])
+            cv2.imshow(self.CFG.VIS.WINNAME, self.images[-1])
 
             ## Check for change to inspect mode
             key = cv2.waitKey(1)
