@@ -28,7 +28,7 @@ Ponadto projekt zakłada:
 - [ ] Nagrania testowe, min. 3x30s, najlepiej w różnych oświetleniach (MK)
 - [X] Separacja obszarów odpowiadających skórze ludzkiej (MK/KF)
 - [X] Separacja dłoni z palcami od innych obszarów (np. twarzy) (MK/KF)
-- [ ] Separacja palców od dłoni (KF/MK)
+- [X] Separacja palców od dłoni (KF/MK)
 - [ ] Zliczanie palców (KF/MK)
 - [ ] Wyznaczenie pozycji palców (KF/MK)
 - [ ] Wyświetlanie informacji użytkownikowi (MS/MK)
