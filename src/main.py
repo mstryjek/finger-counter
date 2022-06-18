@@ -11,7 +11,7 @@ def main() -> None:
     cfg = Config.auto()
     done = False
 
-    with ProcessingVisualizer(cfg.VIS) as vis, ImageIO(cfg) as io, ImageProcessor(cfg) as proc:
+    with ProcessingVisualizer(cfg) as vis, ImageIO(cfg) as io, ImageProcessor(cfg) as proc:
         for img in io.read_images():
             vis.reset()
             vis.store(img)
