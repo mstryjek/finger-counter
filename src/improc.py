@@ -91,7 +91,8 @@ class ImageProcessor():
 		cnt_max_area = contours[np.argmax(areas)]
 		return cv2.drawContours(filtered_mask, [cnt_max_area], -1, (255, 255, 255), -1)
 
-	def inscribe_circle(self, mask: np.ndarray) -> np.ndarray:
+
+	def inscribe_circle(self, mask: np.ndarray) -> Tuple[np.ndarray, float, Tuple[int, int]]:
 		"""
 		Remove center of the hand from the binary image
 		"""
@@ -103,7 +104,8 @@ class ImageProcessor():
 
 		return circle, radius, center
 
-	def remove_wrist(self, mask: np.ndarray, radius: float, center) -> np.ndarray:
+
+	def remove_wrist(self, mask: np.ndarray, radius: float, center: Tuple[int, int]) -> np.ndarray:
 		"""
 		Remove contour of wrist from the binary image
 		"""
@@ -120,8 +122,9 @@ class ImageProcessor():
 				cY = 0
 			mass_center.append(cY)
 		#Wrist contour is presumed to be the one below the center of the hand
-		finger_cnts = [contours[i] for i in range(len(contours)) if mass_center[i] <= center[1]]
+		finger_cnts = [contours[i] for i in range(len(contours)) if mass_center[i] < center[1] + radius/2]
 		return cv2.drawContours(filtered_mask, finger_cnts, -1, (255, 255, 255), -1)
+
 
 	def remove_bent_fingers(self, mask: np.ndarray) -> np.ndarray :
 		"""
@@ -144,3 +147,11 @@ class ImageProcessor():
 		proper_finger_cnts = [contours[i] for i in range(len(contours)) if areas[i] > tresh]
 
 		return cv2.drawContours(filtered_mask, proper_finger_cnts, -1, (255, 255, 255), -1)
+
+
+	def count_fingers(self, mask: np.ndarray) -> int:
+		"""
+		Count valid blobs in a binary image.
+		"""
+		cnts, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+		return len(cnts)

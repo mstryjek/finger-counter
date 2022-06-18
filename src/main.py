@@ -11,9 +11,8 @@ def main() -> None:
     cfg = Config.auto()
     done = False
 
-    with ProcessingVisualizer(cfg) as vis, ImageIO(cfg) as io, ImageProcessor(cfg) as proc:
+    with ProcessingVisualizer(cfg.VIS) as vis, ImageIO(cfg) as io, ImageProcessor(cfg) as proc:
         for img in io.read_images():
-            ## Do not remove these two lines!!
             vis.reset()
             vis.store(img)
 
@@ -35,9 +34,13 @@ def main() -> None:
             no_wrist = proc.remove_wrist(distance, radius, center)
             vis.store(no_wrist)
 
-            proper_fingers = proc.remove_bent_fingers(no_wrist)
-            vis.store(proper_fingers)
-            ## Add finger extraction here
+            valid_fingers = proc.remove_bent_fingers(no_wrist)
+            vis.store(valid_fingers)
+
+            num_fingers = proc.count_fingers(valid_fingers)
+
+            drawn = vis.draw(img, valid_fingers, num_fingers)
+            vis.store(drawn)
 
             done = vis.show()
             if done: break

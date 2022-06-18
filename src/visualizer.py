@@ -19,7 +19,7 @@ class ProcessingVisualizer():
         self.CFG = cfg
         self.reset()
         self.inspect_mode = False
-
+        ## TODO Precalculate textbox w,h and vertical margins for indicators
 
     def __enter__(self):
         """Enter context and create widnow."""
@@ -30,6 +30,33 @@ class ProcessingVisualizer():
     def __exit__(self, exc_type: Any, exc_value: Any, exc_tb: Any) -> None:
         """Safely exit."""
         cv2.destroyAllWindows()
+
+
+    def draw_mask(self, img: np.ndarray, mask: np.ndarray) -> np.ndarray:
+        """
+        Draw a color mask on the image.
+        """
+        masked = img.copy()
+        masked[mask != 0] = self.CFG.VIS.COLOR
+        cv2.addWeighted(masked, self.CFG.VIS.ALPHA, img, 1.-self.CFG.VIS.ALPHA, 0, masked)
+        return masked
+
+
+    def draw_textbox(self, img: np.ndarray, num_fingers: int) -> np.ndarray:
+        """
+        Draw textbox info on an image.
+        """
+        
+
+
+
+    def draw(self, img: np.ndarray, mask: np.ndarray, num_fingers: int) -> np.ndarray:
+        """
+        Draw detection results on an image.
+        """
+        drawn = self.draw_mask(img, mask)
+        drawn = self.draw_textbox(img, mask)
+        return drawn
 
 
     def reset(self) -> None:
