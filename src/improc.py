@@ -82,9 +82,40 @@ class ImageProcessor():
 		"""
 		contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 		areas = [cv2.contourArea(cnt) for cnt in contours]
-		
-		cnt_max_area = contours[np.argmax(areas)]
-		
 		filtered_mask = np.zeros(mask.shape, dtype=np.uint8)
+
+		if areas == []:
+			return filtered_mask
+
+		cnt_max_area = contours[np.argmax(areas)]
 		return cv2.drawContours(filtered_mask, [cnt_max_area], -1, (255, 255, 255), -1)
 
+	def inscribe_circle(self, mask: np.ndarray) -> np.ndarray:
+
+		distance = cv2.distanceTransform(mask, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+		# cv2.normalize(distance, distance, 0, 1.0, cv2.NORM_MINMAX)
+		_, max_val, _, center = cv2.minMaxLoc(distance)
+		radius = max_val*self.CFG.PROCESSING.CIRCLE_SCALE
+		circle = cv2.circle(mask.copy(), center, int(radius), (0, 0, 0), -1)
+
+		return circle, radius, center
+
+	def removing_wrist(self, mask: np.ndarray, radius: float, center) -> np.ndarray:
+		
+		contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+		filtered_mask = np.zeros(mask.shape, dtype=np.uint8)
+			
+		#Calculating the center of mass in Y coordinates for all contours
+		mass_center = []
+		for cnt in contours:
+			M = cv2.moments(cnt)
+			if M["m00"] != 0:
+				cY = int(M["m01"] / M["m00"])
+			else :
+				cY = 0
+			mass_center.append(cY)
+			# if cY <= center[1]:
+			# 	cv2.drawContours(filtered_mask, [cnt], -1, (255, 255, 255), -1)
+		# finger_contours = [value for value in mass_center if value < center[0]]
+		finger_cnts = [contours[i] for i in range(len(contours)) if mass_center[i] <= center[1]]
+		return cv2.drawContours(filtered_mask, finger_cnts, -1, (255, 255, 255), -1)

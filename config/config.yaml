@@ -28,3 +28,4 @@ PROCESSING:           ## Config for image processing
   BLUR_SIZE: 7        ## Blur kernel size for gaussian blurring [uint]
   CLOSE_SIZE: 3       ## Mothpology kernel size for closing operation [uint]
   CLOSE_ITERS: 3      ## How many iterations of closing to use [uint]
+  CIRCLE_SCALE: 1.6   ## Scale of inscribed circle to separete fingers [float]

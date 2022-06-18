@@ -20,14 +20,20 @@ def main() -> None:
             smoothed = proc.smooth(img)
             vis.store(smoothed)
 
-            eq = proc.equalize(smoothed)
-            vis.store(eq)
+            # eq = proc.equalize(smoothed)
+            # vis.store(eq)
 
-            mask = proc.extract_color_mask(eq)
+            mask = proc.extract_color_mask(smoothed)
             vis.store(mask)
 
             cnt = proc.extract_largest_contour(mask)
             vis.store(cnt)
+
+            distance, radius, center = proc.inscribe_circle(cnt)
+            vis.store(distance)
+
+            no_wrist = proc.removing_wrist(distance, radius, center)
+            vis.store(no_wrist)
 
             ## Add finger extraction here
 
