@@ -3,6 +3,7 @@ TODO Desc
 
 KF
 """
+from matplotlib.pyplot import contour
 import numpy as np
 import cv2
 
@@ -91,7 +92,9 @@ class ImageProcessor():
 		return cv2.drawContours(filtered_mask, [cnt_max_area], -1, (255, 255, 255), -1)
 
 	def inscribe_circle(self, mask: np.ndarray) -> np.ndarray:
-
+		"""
+		Remove center of the hand from the binary image
+		"""
 		distance = cv2.distanceTransform(mask, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
 		# cv2.normalize(distance, distance, 0, 1.0, cv2.NORM_MINMAX)
 		_, max_val, _, center = cv2.minMaxLoc(distance)
@@ -100,8 +103,10 @@ class ImageProcessor():
 
 		return circle, radius, center
 
-	def removing_wrist(self, mask: np.ndarray, radius: float, center) -> np.ndarray:
-		
+	def remove_wrist(self, mask: np.ndarray, radius: float, center) -> np.ndarray:
+		"""
+		Remove contour of wrist from the binary image
+		"""
 		contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 		filtered_mask = np.zeros(mask.shape, dtype=np.uint8)
 			
@@ -114,8 +119,28 @@ class ImageProcessor():
 			else :
 				cY = 0
 			mass_center.append(cY)
-			# if cY <= center[1]:
-			# 	cv2.drawContours(filtered_mask, [cnt], -1, (255, 255, 255), -1)
-		# finger_contours = [value for value in mass_center if value < center[0]]
+		#Wrist contour is presumed to be the one below the center of the hand
 		finger_cnts = [contours[i] for i in range(len(contours)) if mass_center[i] <= center[1]]
 		return cv2.drawContours(filtered_mask, finger_cnts, -1, (255, 255, 255), -1)
+
+	def remove_bent_fingers(self, mask: np.ndarray) -> np.ndarray :
+		"""
+		Sort out bent fingers from the binary image
+		"""
+		contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+		areas = [cv2.contourArea(cnt) for cnt in contours]
+		filtered_mask = np.zeros(mask.shape, dtype=np.uint8)
+
+		if areas == []:
+			return filtered_mask
+	
+		tresh = max(areas)*self.CFG.PROCESSING.SURF_RATIO
+
+		# print("tresh: ", tresh)
+		# print("max: ", max_area)
+		# print(len(areas))
+		# print ("areas ", areas)
+
+		proper_finger_cnts = [contours[i] for i in range(len(contours)) if areas[i] > tresh]
+
+		return cv2.drawContours(filtered_mask, proper_finger_cnts, -1, (255, 255, 255), -1)

@@ -32,9 +32,11 @@ def main() -> None:
             distance, radius, center = proc.inscribe_circle(cnt)
             vis.store(distance)
 
-            no_wrist = proc.removing_wrist(distance, radius, center)
+            no_wrist = proc.remove_wrist(distance, radius, center)
             vis.store(no_wrist)
 
+            proper_fingers = proc.remove_bent_fingers(no_wrist)
+            vis.store(proper_fingers)
             ## Add finger extraction here
 
             done = vis.show()
