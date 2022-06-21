@@ -173,4 +173,4 @@ class ImageProcessor():
 		if len(self.deq) >= self.CFG.PROCESSING.NUM_FRAMES:
 			self.deq.popleft()
 
-		return int(np.mean(self.deq))
+		return np.round(np.mean(self.deq), 0)

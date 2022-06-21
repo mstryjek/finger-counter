@@ -43,4 +43,4 @@ PROCESSING:                 ## Config for image processing
   CIRCLE_SCALE: 1.8         ## Scale of inscribed circle to separete fingers [float]
   SURF_RATIO: 0.2           ## Treshold to sort out shapes ralative to maximum [float]
   BLOB_AREA_THRESH: 20      ## Minimum blob area to be kept as valid [uint]
-  NUM_FRAMES: 5             ## Number of frames to avergae for [uint]
+  NUM_FRAMES: 5             ## Number of frames to average for [uint]
