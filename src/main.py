@@ -11,6 +11,7 @@ def main() -> None:
     cfg = Config.auto()
     done = False
 
+
     with ProcessingVisualizer(cfg) as vis, ImageIO(cfg) as io, ImageProcessor(cfg) as proc:
         for img in io.read_images():
             vis.reset()
@@ -19,10 +20,10 @@ def main() -> None:
             smoothed = proc.smooth(img)
             vis.store(smoothed)
 
-            # eq = proc.equalize(smoothed)
-            # vis.store(eq)
+            eq = proc.equalize(smoothed)
+            vis.store(eq)
 
-            mask = proc.extract_color_mask(smoothed)
+            mask = proc.extract_color_mask(eq)
             vis.store(mask)
 
             cnt = proc.extract_largest_contour(mask)
@@ -34,7 +35,10 @@ def main() -> None:
             no_wrist = proc.remove_wrist(distance, radius, center)
             vis.store(no_wrist)
 
-            valid_fingers = proc.remove_bent_fingers(no_wrist)
+            blob_filtered = proc.remove_small_blobs(no_wrist)
+            vis.store(blob_filtered)
+
+            valid_fingers = proc.remove_bent_fingers(blob_filtered)
             vis.store(valid_fingers)
 
             num_fingers = proc.count_fingers(valid_fingers)

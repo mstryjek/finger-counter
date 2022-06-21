@@ -31,10 +31,10 @@ PROCESSING:                 ## Config for image processing
   COLOR_BOUNDS:             ## HSV lower and upper bounds for skin detection
     LOW:                    ## HSV lower bounds [Dict[str, uint8]]
       H: 0
-      S: 15
-      V: 100
+      S: 20
+      V: 70
     HIGH:                   ## HSV upper bounds [Dict[str, uint8]]
-      H: 40
+      H: 30
       S: 255
       V: 250
   BLUR_SIZE: 7              ## Blur kernel size for gaussian blurring [uint]
@@ -42,3 +42,5 @@ PROCESSING:                 ## Config for image processing
   CLOSE_ITERS: 3            ## How many iterations of closing to use [uint]
   CIRCLE_SCALE: 1.8         ## Scale of inscribed circle to separete fingers [float]
   SURF_RATIO: 0.2           ## Treshold to sort out shapes ralative to maximum [float]
+  BLOB_AREA_THRESH: 20      ## Minimum blob area to be kept as valid [uint]
+  NUM_FRAMES: 5             ## Number of frames to avergae for [uint]

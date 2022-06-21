@@ -7,6 +7,8 @@ from matplotlib.pyplot import contour
 import numpy as np
 import cv2
 
+from collections import deque
+
 from config import Config
 
 from typing import List, Tuple, Any
@@ -32,6 +34,8 @@ class ImageProcessor():
 			self.CFG.PROCESSING.COLOR_BOUNDS.HIGH.S,
 			self.CFG.PROCESSING.COLOR_BOUNDS.HIGH.V
 		], dtype=np.uint8)
+
+		self.deq = deque()
 
 
 
@@ -149,9 +153,24 @@ class ImageProcessor():
 		return cv2.drawContours(filtered_mask, proper_finger_cnts, -1, (255, 255, 255), -1)
 
 
+	def remove_small_blobs(self, mask: np.ndarray) -> np.ndarray:
+		"""
+		Remove small blobs.
+		"""
+		ret = np.zeros(mask.shape, dtype=np.uint8)
+		cnts, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+		cnts_valid = [cnt for cnt in cnts if cv2.contourArea(cnt) >= self.CFG.PROCESSING.BLOB_AREA_THRESH]
+		return cv2.drawContours(ret, cnts_valid, -1, (255, 255, 255), -1)
+
+
 	def count_fingers(self, mask: np.ndarray) -> int:
 		"""
 		Count valid blobs in a binary image.
 		"""
 		cnts, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-		return len(cnts)
+
+		self.deq.append(len(cnts))
+		if len(self.deq) >= self.CFG.PROCESSING.NUM_FRAMES:
+			self.deq.popleft()
+
+		return int(np.mean(self.deq))
